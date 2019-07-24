@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnUp"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="94dp"
+        android:text="@string/btnUp"
+        app:layout_constraintBottom_toTopOf="@+id/btnBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnConnect" />
+
+    <Button
+        android:id="@+id/btnBottom"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="82dp"
+        android:text="@string/btnBottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUp" />
+
+    <EditText
+        android:id="@+id/serverAddress"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:layout_marginBottom="30dp"
+        android:ems="10"
+        android:hint="@string/serverAddress"
+        android:inputType="textPersonName"
+        android:autofillHints="@string/serverAddress"
+        app:layout_constraintBottom_toTopOf="@+id/serverPort"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/serverPort"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:ems="10"
+        android:hint="@string/serverPort"
+        android:inputType="number"
+        android:autofillHints="@string/serverPort"
+        app:layout_constraintBottom_toTopOf="@+id/btnConnect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/serverAddress" />
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="172dp"
+        android:text="@string/btnConnect"
+        app:layout_constraintBottom_toTopOf="@+id/btnUp"
+        app:layout_constraintEnd_toEndOf="@+id/serverAddress"
+        app:layout_constraintStart_toStartOf="@+id/serverAddress"
+        app:layout_constraintTop_toBottomOf="@+id/serverPort" />
+</android.support.constraint.ConstraintLayout>
