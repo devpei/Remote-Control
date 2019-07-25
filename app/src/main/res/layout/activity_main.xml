@@ -33,12 +33,12 @@
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="184dp"
+        android:autofillHints="@string/serverAddress"
         android:ems="10"
         android:hint="@string/serverAddress"
         android:inputType="textPersonName"
-        android:autofillHints="@string/serverAddress"
-        app:layout_constraintBottom_toTopOf="@+id/serverPort"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,10 +48,10 @@
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:autofillHints="@string/serverPort"
         android:ems="10"
         android:hint="@string/serverPort"
         android:inputType="number"
-        android:autofillHints="@string/serverPort"
         app:layout_constraintBottom_toTopOf="@+id/btnConnect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,4 +67,25 @@
         app:layout_constraintEnd_toEndOf="@+id/serverAddress"
         app:layout_constraintStart_toStartOf="@+id/serverAddress"
         app:layout_constraintTop_toBottomOf="@+id/serverPort" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="220dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="370dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="220dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="14dp"
+        android:text="@string/selectHint"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/serverAddress" />
 </android.support.constraint.ConstraintLayout>

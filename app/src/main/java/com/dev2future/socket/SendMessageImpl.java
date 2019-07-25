@@ -1,5 +1,8 @@
 package com.dev2future.socket;
 
+import com.alibaba.fastjson.JSON;
+import com.dev2future.model.Message;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
@@ -11,29 +14,29 @@ public class SendMessageImpl implements SendMessage {
 
     private String mark;
 
-    private String content;
+    private Message message;
 
     private boolean send = true;
 
     public SendMessageImpl() {
     }
 
-    public SendMessageImpl(String mark, String content) {
+    public SendMessageImpl(String mark, Message message) {
         this.mark = mark;
-        this.content = content;
+        this.message = message;
     }
 
     @Override
-    public void singleSend(String mark, String content) throws IOException {
+    public void singleSend(String mark, Message message) throws IOException {
         Socket socket = SocketClient.getSocket(mark);
-        socket.getOutputStream().write(content.getBytes("UTF-8"));
+        socket.getOutputStream().write(("#" + JSON.toJSONString(message) + "$").getBytes("UTF-8"));
     }
 
     @Override
     public void run() {
         while (send) {
             try {
-                singleSend(getMark(), getContent());
+                singleSend(getMark(), getMessage());
                 Thread.sleep(100);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -63,12 +66,12 @@ public class SendMessageImpl implements SendMessage {
         this.mark = mark;
     }
 
-    public String getContent() {
-        return content;
+    public Message getMessage() {
+        return message;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setMessage(Message message) {
+        this.message = message;
     }
 
     public boolean isSend() {

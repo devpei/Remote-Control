@@ -5,4 +5,5 @@
     <string name="serverAddress">服务器地址</string>
     <string name="serverPort">端口号</string>
     <string name="btnConnect">连接</string>
+    <string name="selectHint">请选择要控制的设备</string>
 </resources>

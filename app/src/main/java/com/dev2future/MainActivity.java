@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 EditText serverPortControl = findViewById(R.id.serverPort);
-                serverPortControl.setText("7500");
+                serverPortControl.setText("7800");
                 Integer serverPort = Integer.valueOf(serverPortControl.getText().toString());
                 if (serverPort < 1 || serverPort == null) {
                     toast("请输入服务器端口");

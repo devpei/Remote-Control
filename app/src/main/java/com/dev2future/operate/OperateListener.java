@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.dev2future.R;
+import com.dev2future.model.Message;
 import com.dev2future.socket.SendMessageImpl;
 import com.dev2future.socket.SocketClient;
 
@@ -36,7 +37,7 @@ public class OperateListener implements View.OnTouchListener, OperateBehavior {
     private void sendContent(int action, String content) {
         if (action == MotionEvent.ACTION_DOWN) {
             //按下发送指令
-            SendMessageImpl operate = new SendMessageImpl("Operate", content);
+            SendMessageImpl operate = new SendMessageImpl("Operate", new Message("192.168.1.202", content));
             operate.addImpl("Operate:Send", operate);
             new Thread(operate, "Operate:Send").start();
             Log.d("MessageImpl", "------------->发送实例数量" + SendMessageImpl.impls.size());
