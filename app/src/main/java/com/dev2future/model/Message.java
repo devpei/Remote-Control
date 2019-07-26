@@ -1,11 +1,17 @@
 package com.dev2future.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class Message {
 
+    public static List<String> selectIps = new ArrayList<>();
+
     /**
-     * 消息类型
+     * 选中的地址
      */
-    private String type = "RemoteControl";
+    public static String selectIp;
 
     /**
      * 源地址
@@ -20,22 +26,20 @@ public class Message {
     /**
      * 内容
      */
-    private String content;
+    private Map<String, Object> content;
 
     public Message() {
     }
 
-    public Message(String destinationAddress, String content) {
+    public Message(String destinationAddress, Map<String, Object> content) {
         this.destinationAddress = destinationAddress;
         this.content = content;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public Message(String sourcesAddress, String destinationAddress, Map<String, Object> content) {
+        this.sourcesAddress = sourcesAddress;
+        this.destinationAddress = destinationAddress;
+        this.content = content;
     }
 
     public String getSourcesAddress() {
@@ -54,11 +58,11 @@ public class Message {
         this.destinationAddress = destinationAddress;
     }
 
-    public String getContent() {
+    public Map<String, Object> getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Map<String, Object> content) {
         this.content = content;
     }
 }

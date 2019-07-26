@@ -6,11 +6,12 @@ import com.dev2future.model.Message;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class SendMessageImpl implements SendMessage {
+public class MessageHandleImpl implements MessageHandle {
 
-    public static Map<String, SendMessageImpl> impls = new HashMap<>();
+    public static Map<String, MessageHandle> impls = new HashMap<>();
 
     private String mark;
 
@@ -18,25 +19,24 @@ public class SendMessageImpl implements SendMessage {
 
     private boolean send = true;
 
-    public SendMessageImpl() {
+    public MessageHandleImpl() {
     }
 
-    public SendMessageImpl(String mark, Message message) {
+    public MessageHandleImpl(String mark) {
         this.mark = mark;
-        this.message = message;
     }
 
     @Override
-    public void singleSend(String mark, Message message) throws IOException {
+    public void singleSend(Message message) throws IOException {
         Socket socket = SocketClient.getSocket(mark);
         socket.getOutputStream().write(("#" + JSON.toJSONString(message) + "$").getBytes("UTF-8"));
     }
 
     @Override
-    public void run() {
+    public void continueSend(Message message) {
         while (send) {
             try {
-                singleSend(getMark(), getMessage());
+                singleSend(message);
                 Thread.sleep(100);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -46,7 +46,21 @@ public class SendMessageImpl implements SendMessage {
         }
     }
 
-    public static void addImpl(String mark, SendMessageImpl impl) {
+    @Override
+    public void messageAnalysis(Message message) {
+        Object devicesList = message.getContent().get("DevicesList");
+        if (devicesList != null) {
+            List<String> devices = (List) devicesList;
+
+        }
+    }
+
+    @Override
+    public void stopSend() {
+        send = false;
+    }
+
+    public static void addImpl(String mark, MessageHandle impl) {
         impls.put(mark, impl);
     }
 
@@ -54,7 +68,7 @@ public class SendMessageImpl implements SendMessage {
         impls.remove(mark);
     }
 
-    public static SendMessageImpl getImpl(String mark) {
+    public static MessageHandle getImpl(String mark) {
         return impls.get(mark);
     }
 

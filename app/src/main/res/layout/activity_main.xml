@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/serverPort" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/selectDevices"
         android:layout_width="220dp"
         android:layout_height="0dp"
         android:layout_marginBottom="370dp"
@@ -84,7 +84,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="14dp"
         android:text="@string/selectHint"
-        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintBottom_toTopOf="@+id/selectDevices"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/serverAddress" />

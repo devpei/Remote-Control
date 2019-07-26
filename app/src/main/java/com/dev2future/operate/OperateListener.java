@@ -6,10 +6,11 @@ import android.view.View;
 
 import com.dev2future.R;
 import com.dev2future.model.Message;
-import com.dev2future.socket.SendMessageImpl;
+import com.dev2future.socket.MessageHandleImpl;
 import com.dev2future.socket.SocketClient;
 
-import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OperateListener implements View.OnTouchListener, OperateBehavior {
 
@@ -37,15 +38,17 @@ public class OperateListener implements View.OnTouchListener, OperateBehavior {
     private void sendContent(int action, String content) {
         if (action == MotionEvent.ACTION_DOWN) {
             //按下发送指令
-            SendMessageImpl operate = new SendMessageImpl("Operate", new Message("192.168.1.202", content));
-            operate.addImpl("Operate:Send", operate);
-            new Thread(operate, "Operate:Send").start();
-            Log.d("MessageImpl", "------------->发送实例数量" + SendMessageImpl.impls.size());
+            Map<String, Object> msgContent = new HashMap();
+            msgContent.put("command", content);
+            MessageHandleImpl operate = new MessageHandleImpl("Operate");
+            Message message = new Message(SocketClient.getSocket("Operate").getInetAddress().getHostAddress(), "192.168.1.202", msgContent);
+            operate.continueSend(message);
+            Log.d("MessageImpl", "------------->发送实例数量" + MessageHandleImpl.impls.size());
         } else if (action == MotionEvent.ACTION_UP) {
             //离开停止指令
-            SendMessageImpl.getImpl("Operate:Send").setSend(false);
-            SendMessageImpl.removeImpl("Operate:Send");
-            Log.d("MessageImpl", "------------->离开实例数量" + SendMessageImpl.impls.size());
+            MessageHandleImpl.getImpl("Operate").stopSend();
+            MessageHandleImpl.removeImpl("Operate");
+            Log.d("MessageImpl", "------------->离开实例数量" + MessageHandleImpl.impls.size());
         }
     }
 }

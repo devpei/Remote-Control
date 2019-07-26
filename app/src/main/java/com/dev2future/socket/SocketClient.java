@@ -2,7 +2,13 @@ package com.dev2future.socket;
 
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.Feature;
+import com.dev2future.model.Message;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,11 +39,53 @@ public class SocketClient implements Runnable {
             if (socket.isConnected()) {
                 Log.d("SocketSuccess", "-------------------------------------->我连接上了");
                 addSocket(getMark(), socket);
+                //开始监听消息
+                messageListener(socket);
+                //初次连接告诉服务端客户端类型
+                //RemoteControl代表是移动控制客户端
+                Map<String, Object> content = new HashMap<>();
+                content.put("clientType", "RemoteControl");
+                //指明消息类型是直接告诉服务端
+                Message message = new Message("0.0.0.0", content);
+                MessageHandle sendMessage = new MessageHandleImpl("Operate");
+                MessageHandleImpl.addImpl("Operate", sendMessage);
+                sendMessage.singleSend(message);
             }
             Log.d("SocketSize", "-------------------------------------->" + sockets.size());
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    protected void messageListener(final Socket socket) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InputStream inputStream = socket.getInputStream();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    while (socket.isConnected() && !(socket.isClosed())) {
+                        int read = inputStream.read();
+                        // 数据格式JSON，流分析以#为起点，$为终点。
+                        if (read != -1) {
+                            if (read == 35) {
+                                // 说明是某一段数据的起点#
+                                baos.reset();
+                                continue;
+                            } else if (read == 36) {
+                                // 说明是某一段数据的终点$
+                                MessageHandleImpl.getImpl("Operate").messageAnalysis((Message) JSON.parseObject(baos.toByteArray(), Message.class, Feature.IgnoreNotMatch));
+                                Log.d("Message", "------------->收到消息" + new String(baos.toByteArray(), "UTF-8"));
+                            }
+                            baos.write(read);
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "Operate:Listener").start();
     }
 
     public static void addSocket(String mark, Socket socket) {
@@ -75,19 +123,4 @@ public class SocketClient implements Runnable {
     public void setMark(String mark) {
         this.mark = mark;
     }
-//    private volatile static SocketClient socketClient;
-//
-//    private SocketClient() {
-//    }
-//
-//    public static SocketClient getInstance() {
-//        if (socketClient == null) {
-//            synchronized (SocketClient.class) {
-//                if (socketClient == null) {
-//                    socketClient = new SocketClient();
-//                }
-//            }
-//        }
-//        return socketClient;
-//    }
 }
