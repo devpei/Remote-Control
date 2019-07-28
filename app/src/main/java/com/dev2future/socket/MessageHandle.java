@@ -4,14 +4,14 @@ import com.dev2future.model.Message;
 
 import java.io.IOException;
 
-public interface MessageHandle {
+public interface MessageHandle extends Runnable {
 
     /**
      * 单一发送
      *
      * @throws IOException
      */
-    void singleSend(Message message) throws IOException;
+    void singleSend(Message message);
 
     /**
      * 持续发送

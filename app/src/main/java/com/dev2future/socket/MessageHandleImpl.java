@@ -1,5 +1,7 @@
 package com.dev2future.socket;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.dev2future.model.Message;
 
@@ -11,13 +13,20 @@ import java.util.Map;
 
 public class MessageHandleImpl implements MessageHandle {
 
-    public static Map<String, MessageHandle> impls = new HashMap<>();
+    public static Map<String, MessageHandleImpl> impls = new HashMap<>();
 
+    //socket表示
     private String mark;
 
     private Message message;
 
+    //决定是否发送
     private boolean send = true;
+
+    //决定发送的类型
+    //单次发送single
+    //持续发送continue
+    private String sendType;
 
     public MessageHandleImpl() {
     }
@@ -27,9 +36,14 @@ public class MessageHandleImpl implements MessageHandle {
     }
 
     @Override
-    public void singleSend(Message message) throws IOException {
-        Socket socket = SocketClient.getSocket(mark);
-        socket.getOutputStream().write(("#" + JSON.toJSONString(message) + "$").getBytes("UTF-8"));
+    public void singleSend(Message message){
+        Socket socket = SocketClient.getSocket(getMark());
+        try {
+            socket.getOutputStream().write(("#" + JSON.toJSONString(message) + "$").getBytes("UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("MessageError","==>消息发送异常："+e.getMessage());
+        }
     }
 
     @Override
@@ -38,8 +52,6 @@ public class MessageHandleImpl implements MessageHandle {
             try {
                 singleSend(message);
                 Thread.sleep(100);
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -51,7 +63,6 @@ public class MessageHandleImpl implements MessageHandle {
         Object devicesList = message.getContent().get("DevicesList");
         if (devicesList != null) {
             List<String> devices = (List) devicesList;
-
         }
     }
 
@@ -60,7 +71,20 @@ public class MessageHandleImpl implements MessageHandle {
         send = false;
     }
 
-    public static void addImpl(String mark, MessageHandle impl) {
+    @Override
+    public void run() {
+        if("single".equals(getSendType())){
+            //表示单一发送
+            singleSend(getMessage());
+        }else if("continue".equals(getSendType())){
+            //表示持续发送
+            continueSend(getMessage());
+        }else {
+            Log.d("SendTip","<==发送类型无法判断");
+        }
+    }
+
+    public static void addImpl(String mark, MessageHandleImpl impl) {
         impls.put(mark, impl);
     }
 
@@ -68,7 +92,7 @@ public class MessageHandleImpl implements MessageHandle {
         impls.remove(mark);
     }
 
-    public static MessageHandle getImpl(String mark) {
+    public static MessageHandleImpl getImpl(String mark) {
         return impls.get(mark);
     }
 
@@ -94,5 +118,13 @@ public class MessageHandleImpl implements MessageHandle {
 
     public void setSend(boolean send) {
         this.send = send;
+    }
+
+    public String getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(String sendType) {
+        this.sendType = sendType;
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.dev2future.R;
 import com.dev2future.model.Message;
+import com.dev2future.socket.ContinueSend;
 import com.dev2future.socket.MessageHandleImpl;
 import com.dev2future.socket.SocketClient;
 
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OperateListener implements View.OnTouchListener, OperateBehavior {
+
+    private ContinueSend send;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -40,15 +43,20 @@ public class OperateListener implements View.OnTouchListener, OperateBehavior {
             //按下发送指令
             Map<String, Object> msgContent = new HashMap();
             msgContent.put("command", content);
-            MessageHandleImpl operate = new MessageHandleImpl("Operate");
-            Message message = new Message(SocketClient.getSocket("Operate").getInetAddress().getHostAddress(), "192.168.1.202", msgContent);
-            operate.continueSend(message);
-            Log.d("MessageImpl", "------------->发送实例数量" + MessageHandleImpl.impls.size());
+            //MessageHandleImpl sendMessage = new MessageHandleImpl("Operate");
+            //MessageHandleImpl operate = (MessageHandleImpl) MessageHandleImpl.getImpl("Operate");
+            Message message = new Message(SocketClient.getSocket("Operate").getInetAddress().getHostAddress(), "192.168.1.5", msgContent);
+            //sendMessage.setMessage(message);
+            //sendMessage.setSendType("continue");
+            //启动线程发送消息
+            //new Thread(sendMessage).start();
+            send = new ContinueSend(SocketClient.getSocket("Operate"),message);
+            new Thread(send).start();
         } else if (action == MotionEvent.ACTION_UP) {
             //离开停止指令
-            MessageHandleImpl.getImpl("Operate").stopSend();
-            MessageHandleImpl.removeImpl("Operate");
-            Log.d("MessageImpl", "------------->离开实例数量" + MessageHandleImpl.impls.size());
+            //MessageHandleImpl.getImpl("Operate").stopSend();
+            //MessageHandleImpl.removeImpl("Operate");
+            send.setSend(false);
         }
     }
 }

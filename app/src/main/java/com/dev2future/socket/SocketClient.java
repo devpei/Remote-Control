@@ -37,7 +37,7 @@ public class SocketClient implements Runnable {
         try {
             Socket socket = new Socket(getServerAddress(), getPort());
             if (socket.isConnected()) {
-                Log.d("SocketSuccess", "-------------------------------------->我连接上了");
+                Log.d("SocketSuccess", "==>连接上了");
                 addSocket(getMark(), socket);
                 //开始监听消息
                 messageListener(socket);
@@ -47,11 +47,11 @@ public class SocketClient implements Runnable {
                 content.put("clientType", "RemoteControl");
                 //指明消息类型是直接告诉服务端
                 Message message = new Message("0.0.0.0", content);
-                MessageHandle sendMessage = new MessageHandleImpl("Operate");
-                MessageHandleImpl.addImpl("Operate", sendMessage);
+                MessageHandleImpl sendMessage = new MessageHandleImpl("Operate");
                 sendMessage.singleSend(message);
+                MessageHandleImpl.addImpl("Operate", sendMessage);
             }
-            Log.d("SocketSize", "-------------------------------------->" + sockets.size());
+            Log.d("SocketSize", "==>SocketSize" + sockets.size());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,7 +76,7 @@ public class SocketClient implements Runnable {
                             } else if (read == 36) {
                                 // 说明是某一段数据的终点$
                                 MessageHandleImpl.getImpl("Operate").messageAnalysis((Message) JSON.parseObject(baos.toByteArray(), Message.class, Feature.IgnoreNotMatch));
-                                Log.d("Message", "------------->收到消息" + new String(baos.toByteArray(), "UTF-8"));
+                                Log.d("Message", "<==收到消息：" + new String(baos.toByteArray(), "UTF-8"));
                             }
                             baos.write(read);
                         }

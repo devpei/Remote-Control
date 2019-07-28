@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText serverAddressControl = findViewById(R.id.serverAddress);
-                serverAddressControl.setText("192.168.1.202");
+                serverAddressControl.setText("192.168.1.3");
                 String serverAddress = serverAddressControl.getText().toString();
                 if (serverAddress == null || "".equals(serverAddress)) {
                     toast("请输入服务器IP地址");
