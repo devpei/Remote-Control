@@ -74,9 +74,9 @@ public class SocketClient implements Runnable {
                                 baos.reset();
                                 continue;
                             } else if (read == 36) {
+                                Log.d("Message", "<==收到消息：" + new String(baos.toByteArray(), "UTF-8"));
                                 // 说明是某一段数据的终点$
                                 MessageHandleImpl.getImpl("Operate").messageAnalysis((Message) JSON.parseObject(baos.toByteArray(), Message.class, Feature.IgnoreNotMatch));
-                                Log.d("Message", "<==收到消息：" + new String(baos.toByteArray(), "UTF-8"));
                             }
                             baos.write(read);
                         }

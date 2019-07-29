@@ -3,6 +3,7 @@ package com.dev2future.socket;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.dev2future.MainActivity;
 import com.dev2future.model.Message;
 
 import java.io.IOException;
@@ -36,13 +37,13 @@ public class MessageHandleImpl implements MessageHandle {
     }
 
     @Override
-    public void singleSend(Message message){
+    public void singleSend(Message message) {
         Socket socket = SocketClient.getSocket(getMark());
         try {
             socket.getOutputStream().write(("#" + JSON.toJSONString(message) + "$").getBytes("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("MessageError","==>消息发送异常："+e.getMessage());
+            Log.d("MessageError", "==>消息发送异常：" + e.getMessage());
         }
     }
 
@@ -63,6 +64,7 @@ public class MessageHandleImpl implements MessageHandle {
         Object devicesList = message.getContent().get("DevicesList");
         if (devicesList != null) {
             List<String> devices = (List) devicesList;
+            Message.selectIps.addAll(devices);
         }
     }
 
@@ -73,14 +75,14 @@ public class MessageHandleImpl implements MessageHandle {
 
     @Override
     public void run() {
-        if("single".equals(getSendType())){
+        if ("single".equals(getSendType())) {
             //表示单一发送
             singleSend(getMessage());
-        }else if("continue".equals(getSendType())){
+        } else if ("continue".equals(getSendType())) {
             //表示持续发送
             continueSend(getMessage());
-        }else {
-            Log.d("SendTip","<==发送类型无法判断");
+        } else {
+            Log.d("SendTip", "<==发送类型无法判断");
         }
     }
 

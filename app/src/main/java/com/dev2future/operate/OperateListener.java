@@ -45,7 +45,7 @@ public class OperateListener implements View.OnTouchListener, OperateBehavior {
             msgContent.put("command", content);
             //MessageHandleImpl sendMessage = new MessageHandleImpl("Operate");
             //MessageHandleImpl operate = (MessageHandleImpl) MessageHandleImpl.getImpl("Operate");
-            Message message = new Message(SocketClient.getSocket("Operate").getInetAddress().getHostAddress(), "192.168.1.5", msgContent);
+            Message message = new Message(SocketClient.getSocket("Operate").getInetAddress().getHostAddress(), "192.168.1.196", msgContent);
             //sendMessage.setMessage(message);
             //sendMessage.setSendType("continue");
             //启动线程发送消息
