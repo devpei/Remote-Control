@@ -1,13 +1,11 @@
 package com.dev2future.operate;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.dev2future.R;
 import com.dev2future.model.Message;
 import com.dev2future.socket.ContinueSend;
-import com.dev2future.socket.MessageHandleImpl;
 import com.dev2future.socket.SocketClient;
 
 import java.util.HashMap;
@@ -45,12 +43,12 @@ public class OperateListener implements View.OnTouchListener, OperateBehavior {
             msgContent.put("command", content);
             //MessageHandleImpl sendMessage = new MessageHandleImpl("Operate");
             //MessageHandleImpl operate = (MessageHandleImpl) MessageHandleImpl.getImpl("Operate");
-            Message message = new Message(SocketClient.getSocket("Operate").getInetAddress().getHostAddress(), "192.168.1.196", msgContent);
+            Message message = new Message(SocketClient.getSocket("Operate").getInetAddress().getHostAddress(), Message.selectIp, msgContent);
             //sendMessage.setMessage(message);
             //sendMessage.setSendType("continue");
             //启动线程发送消息
             //new Thread(sendMessage).start();
-            send = new ContinueSend(SocketClient.getSocket("Operate"),message);
+            send = new ContinueSend(SocketClient.getSocket("Operate"), message);
             new Thread(send).start();
         } else if (action == MotionEvent.ACTION_UP) {
             //离开停止指令

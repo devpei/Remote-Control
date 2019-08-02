@@ -6,8 +6,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import com.dev2future.model.Message;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.Socket;
 import java.util.HashMap;
@@ -39,6 +39,8 @@ public class SocketClient implements Runnable {
             if (socket.isConnected()) {
                 Log.d("SocketSuccess", "==>连接上了");
                 addSocket(getMark(), socket);
+                //改变控件状态
+                Message.handler.sendEmptyMessage(8);
                 //开始监听消息
                 messageListener(socket);
                 //初次连接告诉服务端客户端类型
