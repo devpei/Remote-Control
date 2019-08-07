@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText serverAddressControl = findViewById(R.id.serverAddress);
-                serverAddressControl.setText("192.168.1.202");
+                serverAddressControl.setText("192.168.1.4");
                 String serverAddress = serverAddressControl.getText().toString();
                 if (serverAddress == null || "".equals(serverAddress)) {
                     toast("请输入服务器IP地址");
@@ -54,28 +54,29 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnBottom).setOnTouchListener(new OperateListener());
 
         //获取选择控件对象
-        final Spinner selectDevices = findViewById(R.id.selectDevices);
+        Spinner selectDevices = findViewById(R.id.selectDevices);
         List<String> ips = new ArrayList<>();
         ips.add("请选择设备");
+        ips.add("192.168.1.3");
         selectDevices.setAdapter(new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, ips));
 
-        Handler handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(5000);
-                        Log.d("#####", JSON.toJSONString(Message.selectIps));
-                        if (Message.selectIps.size() > 0) {
-                            selectDevices.setAdapter(new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, Message.selectIps));
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+//        Handler handler = new Handler();
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        Thread.sleep(5000);
+//                        Log.d("#####", JSON.toJSONString(Message.selectIps));
+//                        if (Message.selectIps.size() > 0) {
+//                            selectDevices.setAdapter(new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, Message.selectIps));
+//                        }
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
 
         //点击监听
 //        selectDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,17 +90,17 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
         //选中事件
-        selectDevices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("Select", "==>选中" + Message.selectIp);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.d("Select", "==>什么都没选");
-            }
-        });
+//        selectDevices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d("Select", "==>选中" + Message.selectIp);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                Log.d("Select", "==>什么都没选");
+//            }
+//        });
     }
 
     /**
