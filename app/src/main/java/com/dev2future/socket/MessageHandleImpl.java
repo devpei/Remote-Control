@@ -64,7 +64,8 @@ public class MessageHandleImpl implements MessageHandle {
         Object devicesList = message.getContent().get("DevicesList");
         if (devicesList != null) {
             List<String> devices = (List) devicesList;
-            Message.selectIps.addAll(devices);
+            Message.selectIps = devices;
+            Message.handler.sendEmptyMessage(9);
         }
     }
 

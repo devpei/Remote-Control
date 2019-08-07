@@ -1,5 +1,7 @@
 package com.dev2future.model;
 
+import android.os.Handler;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +9,8 @@ import java.util.Map;
 public class Message {
 
     public static List<String> selectIps = new ArrayList<>();
+
+    public static Handler handler = null;
 
     /**
      * 选中的地址
