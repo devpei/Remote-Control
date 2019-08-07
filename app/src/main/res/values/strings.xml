@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RemoteControl</string>
-    <string name="btnUp">上</string>
-    <string name="btnBottom">下</string>
+    <string name="btnUp">开</string>
+    <string name="btnBottom">关</string>
     <string name="serverAddress">服务器地址</string>
     <string name="serverPort">端口号</string>
     <string name="btnConnect">连接</string>

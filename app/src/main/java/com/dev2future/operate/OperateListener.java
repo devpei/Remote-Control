@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.dev2future.R;
 import com.dev2future.model.Message;
-import com.dev2future.socket.ContinueSend;
+import com.dev2future.socket.SingleSend;
 import com.dev2future.socket.SocketClient;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class OperateListener implements View.OnTouchListener, OperateBehavior {
 
-    private ContinueSend send;
+    private SingleSend send;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -48,13 +48,13 @@ public class OperateListener implements View.OnTouchListener, OperateBehavior {
             //sendMessage.setSendType("continue");
             //启动线程发送消息
             //new Thread(sendMessage).start();
-            send = new ContinueSend(SocketClient.getSocket("Operate"), message);
+            send = new SingleSend(SocketClient.getSocket("Operate"), message);
             new Thread(send).start();
         } else if (action == MotionEvent.ACTION_UP) {
             //离开停止指令
             //MessageHandleImpl.getImpl("Operate").stopSend();
             //MessageHandleImpl.removeImpl("Operate");
-            send.setSend(false);
+            //send.setSend(false);
         }
     }
 }
